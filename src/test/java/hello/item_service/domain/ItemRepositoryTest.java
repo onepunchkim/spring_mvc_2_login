@@ -1,6 +1,7 @@
 package hello.item_service.domain;
 
-import org.assertj.core.api.Assertions;
+import hello.item_service.domain.item.Item;
+import hello.item_service.domain.item.ItemRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,8 +1,7 @@
 package hello.item_service.web.form;
 
-import hello.item_service.domain.Item;
-import hello.item_service.domain.ItemRepository;
-import jakarta.annotation.PostConstruct;
+import hello.item_service.domain.item.Item;
+import hello.item_service.domain.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

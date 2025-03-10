@@ -1,7 +1,7 @@
 package hello.item_service;
 
-import hello.item_service.domain.Item;
-import hello.item_service.domain.ItemRepository;
+import hello.item_service.domain.item.Item;
+import hello.item_service.domain.item.ItemRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
