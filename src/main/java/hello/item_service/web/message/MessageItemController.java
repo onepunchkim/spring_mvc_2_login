@@ -11,11 +11,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
+
 @Slf4j
 @Controller
 @RequestMapping("/message/items")
 @RequiredArgsConstructor
-public class FormItemController {
+public class MessageItemController {
 
     private final ItemRepository itemRepository;
 
