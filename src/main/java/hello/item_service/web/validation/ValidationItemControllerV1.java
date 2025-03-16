@@ -1,4 +1,4 @@
-package hello.item_service.web.message;
+package hello.item_service.web.validation;
 
 import hello.item_service.domain.item.Item;
 import hello.item_service.domain.item.ItemRepository;
@@ -14,9 +14,9 @@ import java.util.List;
 
 @Slf4j
 @Controller
-@RequestMapping("/message/items")
+@RequestMapping("/validation/v1/items")
 @RequiredArgsConstructor
-public class MessageItemController {
+public class ValidationItemControllerV1 {
 
     private final ItemRepository itemRepository;
 
@@ -24,20 +24,20 @@ public class MessageItemController {
     public String items(Model model) {
         List<Item> items = itemRepository.findAll();
         model.addAttribute("items", items);
-        return "message/items";
+        return "validation/v1/items";
     }
 
     @GetMapping("/{itemId}")
     public String item(@PathVariable("itemId") Long itemId, Model model) {
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
-        return "message/item";
+        return "validation/v1/item";
     }
 
     @GetMapping("/add")
     public String addForm(Model model) {
         model.addAttribute("item", new Item());
-        return "message/addForm";
+        return "validation/v1/addForm";
     }
 
     @PostMapping("/add")
@@ -46,19 +46,19 @@ public class MessageItemController {
         redirectAttributes.addAttribute("itemId", savedItem.getId());
         redirectAttributes.addAttribute("status", true);
 
-        return "redirect:/message/items/{itemId}";
+        return "redirect:/validation/v1/items/{itemId}";
     }
 
     @GetMapping("/{itemId}/edit")
     public String editFrom(@PathVariable("itemId") Long itemId, Model model) {
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
-        return "message/editForm";
+        return "validation/v1/editForm";
     }
 
     @PostMapping("/{itemId}/edit")
     public String edit(@PathVariable("itemId") Long itemId, @ModelAttribute Item item) {
         itemRepository.update(itemId, item);
-        return "redirect:/message/items/{itemId}";
+        return "redirect:/validation/v1/items/{itemId}";
     }
 }
