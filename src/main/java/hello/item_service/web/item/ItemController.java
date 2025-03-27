@@ -1,11 +1,9 @@
-package hello.item_service.web.validation;
+package hello.item_service.web.item;
 
 import hello.item_service.domain.item.Item;
 import hello.item_service.domain.item.ItemRepository;
-import hello.item_service.domain.item.SaveCheck;
-import hello.item_service.domain.item.UpdateCheck;
-import hello.item_service.web.validation.form.ItemSaveForm;
-import hello.item_service.web.validation.form.ItemUpdateForm;
+import hello.item_service.web.item.form.ItemSaveForm;
+import hello.item_service.web.item.form.ItemUpdateForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -17,39 +15,37 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
-
 @Slf4j
 @Controller
-@RequestMapping("/validation/v4/items")
+@RequestMapping("/items")
 @RequiredArgsConstructor
-public class ValidationItemControllerV4 {
-
+public class ItemController {
     private final ItemRepository itemRepository;
 
     @GetMapping
     public String items(Model model) {
         List<Item> items = itemRepository.findAll();
         model.addAttribute("items", items);
-        return "validation/v4/items";
+        return "items/items";
     }
 
     @GetMapping("/{itemId}")
-    public String item(@PathVariable("itemId") Long itemId, Model model) {
+    public String item(@PathVariable long itemId, Model model) {
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
-        return "validation/v4/item";
+        return "items/item";
     }
 
     @GetMapping("/add")
     public String addForm(Model model) {
         model.addAttribute("item", new Item());
-        return "validation/v4/addForm";
+        return "items/addForm";
     }
 
     @PostMapping("/add")
     public String addItem(@Validated @ModelAttribute("item") ItemSaveForm form, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
-        //특정 필드가 아닌 복합 룰 검증
+        //특정 필드 예외가 아닌 전체 예외
         if (form.getPrice() != null && form.getQuantity() != null) {
             int resultPrice = form.getPrice() * form.getQuantity();
             if (resultPrice < 10000) {
@@ -57,14 +53,12 @@ public class ValidationItemControllerV4 {
             }
         }
 
-        //검증에 실패하면 다시 입력 폼
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
-            return "validation/v4/addForm";
+            return "items/addForm";
         }
 
         //성공 로직
-
         Item item = new Item();
         item.setItemName(form.getItemName());
         item.setPrice(form.getPrice());
@@ -73,20 +67,20 @@ public class ValidationItemControllerV4 {
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
         redirectAttributes.addAttribute("status", true);
-        return "redirect:/validation/v4/items/{itemId}";
+        return "redirect:/items/{itemId}";
     }
 
     @GetMapping("/{itemId}/edit")
-    public String editFrom(@PathVariable("itemId") Long itemId, Model model) {
+    public String editForm(@PathVariable Long itemId, Model model) {
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
-        return "validation/v4/editForm";
+        return "items/editForm";
     }
 
     @PostMapping("/{itemId}/edit")
-    public String edit(@PathVariable("itemId") Long itemId, @Validated @ModelAttribute("item") ItemUpdateForm form, BindingResult bindingResult) {
+    public String edit(@PathVariable Long itemId, @Validated @ModelAttribute("item") ItemUpdateForm form, BindingResult bindingResult) {
 
-        //특정 필드가 아닌 복합 룰 검증
+        //특정 필드 예외가 아닌 전체 예외
         if (form.getPrice() != null && form.getQuantity() != null) {
             int resultPrice = form.getPrice() * form.getQuantity();
             if (resultPrice < 10000) {
@@ -94,10 +88,9 @@ public class ValidationItemControllerV4 {
             }
         }
 
-        //검증에 실패하면 다시 입력 폼
         if (bindingResult.hasErrors()) {
             log.info("errors={}", bindingResult);
-            return "validation/v4/editForm";
+            return "items/editForm";
         }
 
         Item itemParam = new Item();
@@ -106,6 +99,6 @@ public class ValidationItemControllerV4 {
         itemParam.setQuantity(form.getQuantity());
 
         itemRepository.update(itemId, itemParam);
-        return "redirect:/validation/v4/items/{itemId}";
+        return "redirect:/items/{itemId}";
     }
 }

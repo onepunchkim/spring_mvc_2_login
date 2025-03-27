@@ -1,4 +1,4 @@
-package hello.item_service.web.validation.form;
+package hello.item_service.web.item.form;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -17,7 +17,5 @@ public class ItemUpdateForm {
     @NotNull
     @Range(min = 1000, max = 1000000)
     private Integer price;
-
-    //수정에서는 수량은 자유롭게 변경 할 수 있다.
     private Integer quantity;
 }
